@@ -46,13 +46,17 @@ void BitcoinExchange::inputFile(const char *file) {
 			std::cout << "Error: bad input => " + line << std::endl;
 		else {
 			try {
+				int skip = 0;
 				std::string tmp = line.c_str() + i + 3;
 				for (int j = 0; tmp[j]; j++) {
 					if (!std::isdigit(tmp[j]) && tmp[j] != '.') {
 						std::cout << "Error: bad input => " + line << std::endl;
-						continue ;
+						skip = 1;
+						break ;
 					}
 				}
+				if (skip)
+					continue ;
 				value = std::stod(&line.data()[i + 3]);
 			} catch (std::exception & e) {
 				std::cout << "Error: bad input => " + line << std::endl;
