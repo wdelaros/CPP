@@ -75,7 +75,7 @@ void BitcoinExchange::inputFile(const char *file) {
 				std::cout << "Error: date must be greater than or equal to " + _csv.begin()->first << std::endl;
 				continue ;
 			}
-			else if (value > 1000) {
+			if (value > 1000) {
 				std::cout << "Error: too large a number." << std::endl;
 				continue ;
 			}
