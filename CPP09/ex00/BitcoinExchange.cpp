@@ -48,6 +48,10 @@ void BitcoinExchange::inputFile(const char *file) {
 			try {
 				int skip = 0;
 				std::string tmp = line.c_str() + i + 3;
+				if (tmp[0] == '-') {
+					std::cout << "Error: not a positive number." << std::endl;
+					continue ;
+				}
 				for (int j = 0; tmp[j]; j++) {
 					if (!std::isdigit(tmp[j]) && tmp[j] != '.') {
 						std::cout << "Error: bad input => " + line << std::endl;
@@ -69,10 +73,6 @@ void BitcoinExchange::inputFile(const char *file) {
 			}
 			else if (line < _csv.begin()->first) {
 				std::cout << "Error: date must be greater than or equal to " + _csv.begin()->first << std::endl;
-				continue ;
-			}
-			if (value < 0) {
-				std::cout << "Error: not a positive number." << std::endl;
 				continue ;
 			}
 			else if (value > 1000) {
