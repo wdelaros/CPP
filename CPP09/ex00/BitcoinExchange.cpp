@@ -46,21 +46,6 @@ void BitcoinExchange::inputFile(const char *file) {
 			std::cout << "Error: bad input => " + line << std::endl;
 		else {
 			try {
-				int skip = 0;
-				std::string tmp = line.c_str() + i + 3;
-				if (tmp[0] == '-') {
-					std::cout << "Error: not a positive number." << std::endl;
-					continue ;
-				}
-				for (int j = 0; tmp[j]; j++) {
-					if (!std::isdigit(tmp[j]) && tmp[j] != '.') {
-						std::cout << "Error: bad input => " + line << std::endl;
-						skip = 1;
-						break ;
-					}
-				}
-				if (skip)
-					continue ;
 				value = std::stod(&line.data()[i + 3]);
 			} catch (std::exception & e) {
 				std::cout << "Error: bad input => " + line << std::endl;
@@ -75,6 +60,21 @@ void BitcoinExchange::inputFile(const char *file) {
 				std::cout << "Error: date must be greater than or equal to " + _csv.begin()->first << std::endl;
 				continue ;
 			}
+			int skip = 0;
+			std::string tmp = line.c_str() + i + 3;
+			if (tmp[0] == '-') {
+				std::cout << "Error: not a positive number." << std::endl;
+				continue ;
+			}
+			for (int j = 0; tmp[j]; j++) {
+				if (!std::isdigit(tmp[j]) && tmp[j] != '.') {
+					std::cout << "Error: bad input => " + line << std::endl;
+					skip = 1;
+					break ;
+				}
+			}
+			if (skip)
+				continue ;
 			if (value > 1000) {
 				std::cout << "Error: too large a number." << std::endl;
 				continue ;
