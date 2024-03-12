@@ -1,4 +1,5 @@
 #include "BitcoinExchange.hpp"
+#include <cctype>
 #include <exception>
 #include <iomanip>
 #include <iostream>
@@ -37,12 +38,21 @@ void BitcoinExchange::inputFile(const char *file) {
 	if (!ifs)
 		throw std::invalid_argument("Error: could not open file");
 	std::getline(ifs, line);
+	if (line != "date | value")
+		throw std::invalid_argument("Error: wrong format");
 	while (std::getline(ifs, line)) {
 		unsigned long long  int i = line.find(" | ");
-		if (i == std::string::npos || countChar(line, ','))
+		if (i == std::string::npos || countChar(line, ',') || countChar(line, '.') > 1)
 			std::cout << "Error: bad input => " + line << std::endl;
 		else {
 			try {
+				std::string tmp = line.c_str() + i + 3;
+				for (int j = 0; tmp[j]; j++) {
+					if (!std::isdigit(tmp[j]) && tmp[j] != '.') {
+						std::cout << "Error: bad input => " + line << std::endl;
+						continue ;
+					}
+				}
 				value = std::stod(&line.data()[i + 3]);
 			} catch (std::exception & e) {
 				std::cout << "Error: bad input => " + line << std::endl;
